@@ -41,35 +41,32 @@ class PostResource extends Resource
                                     ->required()
                                     ->maxLength(2048)
                                 ]),
-                        Forms\Components\TextInput::make('thumbnail')
-                            ->maxLength(2048),
-                        Forms\Components\Textarea::make('body')
+                        Forms\Components\RichEditor::make('body')
                             ->required(),
-                        Forms\Components\Toggle::make('active')
+                        Forms\Components\Toggle::make('active'),
+                        Forms\Components\DateTimePicker::make('published_at'),
+                        ])->columnSpan(8),
+
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\FileUpload::make('thumbnail'),
+                        Forms\Components\Select::make('category_id')
+                            ->multiple()
+                            ->relationship('categories', 'title')
                             ->required(),
-                        Forms\Components\DateTimePicker::make('published_at')
-                            ->required(),
-                        Forms\Components\Select::make('userId')
-                            ->relationship('user', 'name')
-                            ->required(),
-                        ])
-            ]);
+                        ])->columnSpan(4)
+            ])->columns(12);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('thumbnail'),
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('slug'),
-                Tables\Columns\TextColumn::make('thumbnail'),
-                Tables\Columns\TextColumn::make('body'),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('userId'),
-                Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime(),
