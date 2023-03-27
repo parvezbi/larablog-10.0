@@ -57,8 +57,8 @@ class PostController extends Controller
         $prev = Post::query()
             ->where('active', true)
             ->whereDate('published_at', '<=', Carbon::now())
-            ->whereDate('published_at', '>', $post)
-            ->orderBy('published_at','desc')
+            ->whereDate('published_at', '>', $post->published_at)
+            ->orderBy('published_at','asc')
             ->limit(1)
             ->first();
         return view('post.view', compact('post','prev','next'));
